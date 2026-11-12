@@ -1,0 +1,50 @@
+0|Cual de estos es un contenedor de servlets de codigo abierto de Apache?|JBoss|Tomcat|GlassFish|Spring|2
+0|Como se llama actualmente el servidor JBoss AS?|Payara|Jetty|WildFly|Resin|3
+0|GlassFish fue la implementacion de referencia de:|Java EE (Jakarta EE)|Java ME|JavaFX|Swing|1
+0|Cual de estos servidores NO incluye soporte nativo para EJB?|JBoss|GlassFish|WildFly|Tomcat|4
+0|Cual es el puerto HTTP por defecto de Tomcat?|80|8080|4848|9090|2
+0|Cual es una ventaja de Tomcat frente a JBoss o GlassFish?|Es liviano y facil de configurar|Incluye EJB completo|Es de pago|Solo funciona en Windows|1
+0|Cual es el puerto por defecto de la consola de administracion de GlassFish?|8080|9990|4848|3306|3
+0|Cual es una desventaja de JBoss y GlassFish frente a Tomcat?|No soportan servlets|Mayor consumo de recursos|No tienen documentacion|No admiten JSP|2
+0|Que tipo de archivo se usa para desplegar una aplicacion web en estos servidores?|EXE|ZIP|WAR|DLL|3
+0|Como se llama el motor contenedor de servlets de Tomcat?|Catalina|Jasper|Coyote|Cluster|1
+1|Para que sirve principalmente Maven?|Gestionar dependencias y construir proyectos|Disenar interfaces|Administrar bases de datos|Compilar solo HTML|1
+1|Cual es el archivo de configuracion principal de un proyecto Maven?|build.gradle|web.xml|pom.xml|config.json|3
+1|Hibernate es un framework de:|Interfaz grafica|Mapeo objeto-relacional (ORM)|Pruebas unitarias|Servidor web|2
+1|Cual es el concepto central del framework Spring?|Applets|Servlets puros|Procedimientos almacenados|Inversion de control e inyeccion de dependencias|4
+1|Como se llama el lenguaje de consultas orientado a objetos de Hibernate?|HQL|PL/SQL|T-SQL|XPath|1
+1|Que comando de Maven empaqueta el proyecto en un JAR o WAR?|mvn clean|mvn package|mvn test|mvn init|2
+1|Que anotacion JPA/Hibernate marca una clase como entidad de base de datos?|@Table|@Bean|@Entity|@Override|3
+1|Que anotacion de Spring marca una clase de la capa de servicio?|@Service|@Entity|@WebServlet|@Column|1
+1|Cual es una desventaja comun de Spring?|No permite inyeccion de dependencias|Solo funciona con Tomcat|No admite bases de datos|Curva de aprendizaje alta|4
+1|Donde guarda Maven por defecto las dependencias descargadas?|En la carpeta del proyecto|En el repositorio local (.m2)|En el escritorio|En el servidor Tomcat|2
+2|Que significa JWS?|Java Web Start|Java Web Server|Java Windows System|JavaScript Web Service|1
+2|Que archivo describe la aplicacion que lanza Java Web Start?|JAR|WAR|JNLP|XML de Maven|3
+2|Que permite hacer Java Web Start?|Crear paginas HTML|Lanzar aplicaciones Java desde la web sin instalacion manual|Compilar codigo en el servidor|Administrar bases de datos|2
+2|El archivo JNLP esta escrito en formato:|JSON|Binario|Texto plano sin estructura|XML|4
+2|Cual es una ventaja de Java Web Start?|No requiere Java|Actualiza la aplicacion automaticamente|Funciona sin red siempre|No necesita servidor|2
+2|Que debe tener instalado el cliente para usar Java Web Start?|Tomcat|Maven|Java Runtime Environment (JRE)|GlassFish|3
+2|Con que se firman las aplicaciones JWS para que sean de confianza?|Certificado digital (jarsigner)|Contrasena en el JNLP|Archivo WAR|Anotaciones|1
+2|Como funciona la arquitectura de JWS?|El servidor ejecuta todo el codigo|El navegador compila el codigo|Se usa solo una base de datos|El cliente descarga los JAR y los ejecuta localmente en su JVM|4
+2|Que paso con Java Web Start en las versiones recientes de Java?|Se mejoro|Fue eliminado (Java 11)|Se volvio obligatorio|Se integro a Maven|2
+2|Cual es una alternativa comunitaria que reemplaza a Java Web Start?|Hibernate|WildFly|OpenWebStart|JSTL|3
+3|Que significa JSP?|Java Standard Process|JavaServer Pages|Java Secure Protocol|JavaScript Pages|2
+3|Que etiquetas se usan para un scriptlet en JSP?|<% ... %>|<?php ... ?>|{{ ... }}|<script> ... </script>|1
+3|En que se convierte una pagina JSP al ejecutarse por primera vez?|Un archivo JAR|Una pagina HTML estatica|Un servlet|Una clase abstracta|3
+3|Que directiva se usa para importar clases en una pagina JSP?|<%! import %>|<%= import %>|<jsp:import ... />|<%@ page import="..." %>|4
+3|Cual es el objeto implicito de JSP que representa la peticion del cliente?|response|request|out|config|2
+3|Cual es el objeto implicito de JSP para manejar la sesion del usuario?|session|application|page|exception|1
+3|Que etiquetas se usan para una expresion en JSP que imprime un valor?|<% ... %>|<%! ... %>|<%= ... %>|<%-- ... --%>|3
+3|Cual es una ventaja de JSP?|Evita usar HTML|Separa la presentacion de la logica de negocio|No necesita servidor|Solo funciona con bases de datos|2
+3|Que libreria de etiquetas estandar permite evitar scriptlets en JSP?|Hibernate|Maven|JNLP|JSTL|4
+3|Que metodo generado atiende las peticiones en el ciclo de vida de una JSP?|_jspService()|doGet()|main()|run()|1
+4|De que clase hereda normalmente un servlet HTTP?|Applet|JFrame|HttpServlet|Thread|3
+4|Que metodo de un servlet atiende las peticiones HTTP GET?|doGet()|doPost()|service()|init()|1
+4|Cual es el archivo de configuracion tradicional de una aplicacion web Java?|pom.xml|web.xml|persistence.xml|build.xml|2
+4|Que anotacion (Servlet 3.0) permite mapear un servlet a una URL?|@Entity|@Service|@Controller|@WebServlet|4
+4|Que metodo se ejecuta una sola vez al iniciar un servlet?|init()|destroy()|doGet()|finalize()|1
+4|Que objeto se usa para escribir la respuesta hacia el cliente?|HttpSession|ServletConfig|HttpServletResponse|RequestDispatcher|3
+4|En una aplicacion cliente/servidor con JSP y Servlets, como es el flujo?|El servidor envia peticiones al cliente|El cliente envia una peticion HTTP y el servidor responde|Ambos se comunican sin protocolo|El cliente ejecuta el servlet|2
+4|Que metodo redirige al cliente a otra URL?|forward()|include()|setAttribute()|sendRedirect()|4
+4|Que objeto permite mantener datos del usuario entre varias peticiones?|HttpSession|PrintWriter|ServletOutputStream|Cookie de HTML|1
+4|Para que sirve RequestDispatcher.forward()?|Cerrar el servidor|Redirigir al cliente al navegador|Delegar la peticion a otro servlet o JSP dentro del servidor|Compilar una JSP|3

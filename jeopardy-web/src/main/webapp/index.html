@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jeopardy Java Live</title>
+<style>
+body{margin:0;font-family:system-ui,sans-serif;background:#46178f;color:#fff;text-align:center;transition:background .3s}
+main{max-width:900px;margin:0 auto;padding:20px}
+section[hidden],div[hidden]{display:none}
+input,button{font-size:1.2rem;padding:12px;border-radius:8px;border:0;margin:6px}
+button{background:#fff;color:#46178f;font-weight:bold;cursor:pointer}
+.pin{font-size:4rem;font-weight:bold;letter-spacing:8px;background:#fff;color:#46178f;border-radius:12px;display:inline-block;padding:0 24px}
+.chip{display:block;background:#fff3;border-radius:20px;padding:6px 14px;margin:4px auto;max-width:360px}
+#lista .chip{display:inline-block;margin:4px}
+.ops{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.op{padding:22px 10px;border-radius:8px;font-size:1.2rem;color:#fff;margin:0;min-height:70px}
+.t{font-size:2.5rem;font-weight:bold}
+#err{color:#ffd6d6}
+</style></head><body><main>
+
+<section id="home"><h1>Jeopardy Java Live</h1>
+<button onclick="crear()">Crear partida (anfitrion)</button><hr>
+<input id="ipin" placeholder="PIN" inputmode="numeric"><br>
+<input id="inom" placeholder="Tu nombre" maxlength="15"><br>
+<button onclick="unir()">Unirse</button><p id="err"></p></section>
+
+<section id="hLobby" hidden><p>Entra a <b id="url"></b> e ingresa el PIN:</p>
+<div class="pin" id="pin"></div><h2>Jugadores (<span id="cant">0</span>)</h2>
+<div id="lista"></div><button onclick="ws.send('INICIAR')">Iniciar juego</button></section>
+
+<section id="hPreg" hidden><p id="hN"></p><h1 id="hEnun"></h1><div class="t" id="hT"></div>
+<div class="ops" id="hOps"></div><p id="cont"></p>
+<div id="hRes" hidden><h3>Top 5</h3><div id="hTop"></div>
+<button id="sig" onclick="ws.send('SIGUIENTE')"></button></div></section>
+
+<section id="pEspera" hidden><h2 id="pTxt"></h2></section>
+<section id="pResp" hidden><h2 id="pEn"></h2><div class="ops" id="pOps"></div></section>
+<section id="pResultado" hidden><h1 id="pRes"></h1><h2 id="pPts"></h2><h2 id="pPos"></h2></section>
+<section id="fin" hidden><h1>Podio final</h1><div id="podio"></div>
+<button onclick="location.reload()">Volver al inicio</button></section>
+
+</main><script>
+const $=id=>document.getElementById(id),C=['#e21b3c','#1368ce','#d89e00','#26890c'];
+let ws,rol,reloj;
+const show=v=>document.querySelectorAll('section').forEach(s=>s.hidden=s.id!==v);
+function lista(el,txt,pts){el.innerHTML='';txt.split(',').filter(x=>x).forEach((x,i)=>{
+ const d=document.createElement('div');d.className='chip';
+ d.textContent=pts?(i+1)+'. '+x.replace(':',' - ')+' pts':x;el.appendChild(d)})}
+function conectar(cb){const b=location.pathname.replace(/[^\/]*$/,'');
+ ws=new WebSocket((location.protocol=='https:'?'wss://':'ws://')+location.host+b+'ws');
+ ws.onopen=cb;ws.onmessage=e=>recibir(e.data.split('|'));ws.onclose=()=>clearInterval(reloj)}
+function crear(){rol='host';conectar(()=>ws.send('CREAR'))}
+function unir(){rol='player';$('err').textContent='';conectar(()=>ws.send('UNIR|'+$('ipin').value+'|'+$('inom').value))}
+function responder(i){ws.send('RESP|'+i);$('pTxt').textContent='Respuesta enviada. Esperando al resto...';show('pEspera')}
+function opciones(el,p,boton){el.innerHTML='';for(let i=0;i<4;i++){
+ const o=document.createElement(boton?'button':'div');o.className='op';o.style.background=C[i];
+ o.textContent=p[5+i];if(boton)o.onclick=()=>responder(i);el.appendChild(o)}}
+function recibir(p){switch(p[0]){
+ case 'PIN':$('pin').textContent=p[1];$('url').textContent=location.href.split('#')[0];show('hLobby');break;
+ case 'LOBBY':lista($('lista'),p[1]);$('cant').textContent=p[1].split(',').filter(x=>x).length;break;
+ case 'AVISO':alert(p[1]);break;
+ case 'ERR':$('err').textContent=p[1];ws.close();show('home');break;
+ case 'OK':$('pTxt').textContent='Estas dentro, '+p[1]+'! Espera a que el anfitrion inicie.';show('pEspera');break;
+ case 'PREG':document.body.style.background='';
+  if(rol=='host'){$('hN').textContent='Pregunta '+p[1]+' de '+p[2]+' - '+p[3];$('hEnun').textContent=p[4];
+   opciones($('hOps'),p,false);$('cont').textContent='';$('hRes').hidden=true;
+   let t=+p[9];$('hT').textContent=t;clearInterval(reloj);
+   reloj=setInterval(()=>{$('hT').textContent=Math.max(0,--t)},1000);show('hPreg')}
+  else{$('pEn').textContent=p[4];opciones($('pOps'),p,true);show('pResp')}break;
+ case 'CONT':$('cont').textContent=p[1]+' / '+p[2]+' han respondido';break;
+ case 'RES':document.body.style.background=p[1]=='1'?'#26890c':'#e21b3c';
+  $('pRes').textContent=p[1]=='1'?'Correcto!':'Incorrecto';
+  $('pPts').textContent='+'+p[2]+' puntos (total '+p[3]+')';
+  $('pPos').textContent='Vas en el puesto '+p[4];show('pResultado');break;
+ case 'RESH':{clearInterval(reloj);const c=p[2].split(','),os=$('hOps').children;
+  for(let i=0;i<4;i++){os[i].style.opacity=i==+p[1]?1:.3;os[i].textContent+=' ['+c[i]+']'+(i==+p[1]?' ✔':'')}
+  lista($('hTop'),p[3],true);$('sig').textContent=p[4]=='1'?'Ver podio final':'Siguiente pregunta';
+  $('hRes').hidden=false;break}
+ case 'FIN':document.body.style.background='';lista($('podio'),p[1],true);show('fin');break}}
+</script></body></html>
